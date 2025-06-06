@@ -92,8 +92,15 @@ jobs:
         continue-on-error: true
 
       - name: Set PLAN output
-        id: plan-output
-        run: echo "PLAN=$(echo 'terraform\n' && cat plan.txt)" >> $GITHUB_ENV
+        id: set-plan
+        run: |
+          {
+            echo 'PLAN<<EOF'
+            echo 'terraform'
+            cat plan.txt
+            echo 'EOF'
+          } >> $GITHUB_ENV
+
 
       - name: Generate Terraform Docs
         uses: terraform-docs/gh-actions@v1.3.0
