@@ -108,7 +108,7 @@ jobs:
           working-dir: ./modules
           output-file: README.md
           output-method: inject
-          git-push: false
+          git-push: true
           config-file: .terraform-docs.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
