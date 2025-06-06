@@ -82,17 +82,23 @@ jobs:
         run: terraform plan  
         working-directory: ./
 
+
       - name: Perform Action
         run: |
-          if [ "${{ github.event.inputs.action }}" == "apply" ]; then
+          EVENT_NAME="${{ github.event_name }}"
+          ACTION_INPUT="${{ github.event.inputs.action }}"
+
+          if [ "$EVENT_NAME" == "push" ]; then
+            echo "Triggered by push event. Defaulting to 'apply'."
             terraform apply -auto-approve
-          elif [  "${{ github.event.inputs.action }}" == "push" ]; then
-               terraform apply -auto-approve
-          elif [ "${{ github.event.inputs.action }}" == "destroy" ]; then
+          elif [ "$ACTION_INPUT" == "apply" ]; then
+            terraform apply -auto-approve
+          elif [ "$ACTION_INPUT" == "destroy" ]; then
             terraform destroy -auto-approve
           else
-            echo "Invalid action selected."
+            echo "Invalid action selected or missing input."
             exit 1
           fi
+
 
  
