@@ -12,9 +12,6 @@ on:
         options:
           - apply
           - destroy
-  push:
-    branches:
-      - main
       
 permissions:
   contents: write
