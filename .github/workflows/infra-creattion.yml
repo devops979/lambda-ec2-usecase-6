@@ -74,6 +74,7 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+        
       - name: Terraform Test
         run: terraform test
         continue-on-error: true
