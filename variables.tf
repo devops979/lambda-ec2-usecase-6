@@ -5,12 +5,12 @@ variable "instance_id" {
 
 variable "start_schedule" {
    type = string
-   default = "cron(15 12 ? * MON-FRI *)"
+   default = "cron(45 12 ? * MON-FRI *)"
 }
 
 variable "stop_schedule" {
   type = string
-  default = "cron(25 12 ? * MON-FRI *)"
+  default = "cron(55 12 ? * MON-FRI *)"
 }
 
 variable "name_prefix" {
