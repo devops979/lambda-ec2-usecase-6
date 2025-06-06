@@ -1,0 +1,21 @@
+module.ec2_scheduler.module.start_lambda.data.archive_file.zip_file: Reading...
+module.ec2_scheduler.module.stop_lambda.data.archive_file.zip_file: Reading...
+module.ec2_scheduler.module.start_lambda.data.archive_file.zip_file: Read complete after 0s [id=fad2057a28f4e580aa11635889078f33d4a8bd75]
+module.ec2_scheduler.module.stop_lambda.data.archive_file.zip_file: Read complete after 0s [id=eaefb8bfbd16b3a7757468b33a540bbe406a9fd3]
+module.ec2_scheduler.module.iam.aws_iam_policy.ec2_start_stop: Refreshing state... [id=arn:aws:iam::211125325699:policy/prod_ec2_scheduler_EC2StartStopPolicy]
+module.ec2_scheduler.module.start_event.aws_cloudwatch_event_rule.cloud_watch_lambda_ec2_rule: Refreshing state... [id=prod_ec2_scheduler_start_rule]
+module.ec2_scheduler.module.iam.aws_iam_role.lambda_iam_role: Refreshing state... [id=prod_ec2_scheduler_lambda_role]
+module.ec2_scheduler.module.stop_event.aws_cloudwatch_event_rule.cloud_watch_lambda_ec2_rule: Refreshing state... [id=prod_ec2_scheduler_stop_rule]
+module.ec2_scheduler.module.iam.aws_iam_role_policy_attachment.ec2_start_stop: Refreshing state... [id=prod_ec2_scheduler_lambda_role-20250606081558648500000001]
+module.ec2_scheduler.module.iam.aws_iam_role_policy_attachment.lambda_basic_execution: Refreshing state... [id=prod_ec2_scheduler_lambda_role-20250606081558677500000002]
+module.ec2_scheduler.module.start_lambda.aws_lambda_function.lamb_fn: Refreshing state... [id=prod_ec2_scheduler_start_instance]
+module.ec2_scheduler.module.stop_lambda.aws_lambda_function.lamb_fn: Refreshing state... [id=prod_ec2_scheduler_stop_instance]
+module.ec2_scheduler.module.start_event.aws_lambda_permission.this: Refreshing state... [id=AllowExecutionFromEventBridge_prod_ec2_scheduler_start_rule]
+module.ec2_scheduler.module.start_event.aws_cloudwatch_event_target.cloud_watch_event_lambda_ec2_rule: Refreshing state... [id=prod_ec2_scheduler_start_rule-prod_ec2_scheduler_start_rule_target]
+module.ec2_scheduler.module.stop_event.aws_lambda_permission.this: Refreshing state... [id=AllowExecutionFromEventBridge_prod_ec2_scheduler_stop_rule]
+module.ec2_scheduler.module.stop_event.aws_cloudwatch_event_target.cloud_watch_event_lambda_ec2_rule: Refreshing state... [id=prod_ec2_scheduler_stop_rule-prod_ec2_scheduler_stop_rule_target]
+
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
