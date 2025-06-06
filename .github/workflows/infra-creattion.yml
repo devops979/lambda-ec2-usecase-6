@@ -107,7 +107,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           header: "Terraform Documentation"
-          path: "./Infra/README.md"
+          path: "./README.md"
           number: ${{ github.event.pull_request.number }}
 
   terraform-apply:
