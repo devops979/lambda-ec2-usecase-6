@@ -1,20 +1,14 @@
-data "archive_file" "zip_file" {
-  type        = "zip"
-  source_file = var.source_file
-  output_path = "${path.module}/${var.function_name}.zip"
-}
 
-resource "aws_lambda_function" "lamb_fn" {
-  filename      = data.archive_file.zip_file.output_path
-  function_name = var.function_name
-  role          = var.role_arn
-  handler       = var.handler
-  runtime       = var.runtime
-  timeout       = var.timeout
+resource "aws_lambda_function" "this" {
+  function_name = var.function_name
+  handler       = var.handler
+  runtime       = var.runtime
+  role          = var.role
 
-  environment {
-    variables = var.environment_vars
-  }
+  environment {
+    variables = var.environment_variables
+  }
 
-  source_code_hash = data.archive_file.zip_file.output_base64sha256
+  filename         = "${path.module}/lambda_function_payload.zip"
+  source_code_hash = filebase64sha256("${path.module}/lambda_function_payload.zip")
 }
