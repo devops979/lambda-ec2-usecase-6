@@ -1,6 +1,6 @@
 variable "instance_id" {
    type = string
-   default = "i-05ae8374c0ad67c17"
+   default = "i-0beb662a30291346c"
 }
 
 variable "start_schedule" {
