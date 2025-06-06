@@ -1,6 +1,6 @@
 variable "instance_id" {
-   type = string
-   default = "i-0beb662a30291346c"
+  type    = string
+  default = "i-0beb662a30291346c"
 }
 
 variable "start_schedule" {
@@ -14,6 +14,6 @@ variable "stop_schedule" {
 }
 
 variable "name_prefix" {
-  type = string
+  type    = string
   default = "prod_ec2_scheduler"
 }

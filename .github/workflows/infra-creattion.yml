@@ -4,10 +4,9 @@ on:
   pull_request:
     branches:
       - main
-  # push:
-  #   branches:
-  #     - main
-
+  push:
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -41,7 +40,6 @@ jobs:
 
       - name: Run TFLint
         run: tflint --init && tflint -f compact
-
       - name: Run Checkov (soft fail)
         uses: bridgecrewio/checkov-action@v12.2458.0
         with:
@@ -52,7 +50,6 @@ jobs:
     name: Terraform Plan and Docs
     runs-on: ubuntu-latest
     needs: lint-and-security
-    if: github.event_name == 'pull_request'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -73,19 +70,37 @@ jobs:
           terraform_version: ${{ env.TF_VERSION }}
 
       - name: Terraform Init
+        id: init
         run: terraform init
+
       - name: Terraform Test
         run: terraform test
         continue-on-error: true
 
       - name: Terraform Fmt
+        id: fmt
         run: terraform fmt -recursive
 
       - name: Terraform Validate
+        id: validate
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan
+        id: plan
+        run: |
+          terraform plan -no-color | tee plan.txt
+        continue-on-error: true
+
+      - name: Set PLAN output
+        id: set-plan
+        run: |
+          {
+            echo 'PLAN<<EOF'
+            echo 'terraform'
+            cat plan.txt
+            echo 'EOF'
+          } >> $GITHUB_ENV
+
 
       - name: Generate Terraform Docs
         uses: terraform-docs/gh-actions@v1.3.0
@@ -110,40 +125,46 @@ jobs:
           header: "Terraform Documentation"
           path: "./README.md"
           number: ${{ github.event.pull_request.number }}
-      - name: Commit and push updated README.md
+
+      - name: Commit and push all changes
         run: |
-          git add README.md
-          git commit -m "Update Terraform docs"
+          git add -A
+          git commit -m "Update Terraform docs and plan"
           git push
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  terraform-apply:
-    name: Terraform Apply
-    runs-on: ubuntu-latest
-    needs: terraform-plan
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.actor != 'github-actions[bot]'
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Update Pull Request
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: ${{ env.PLAN }}
         with:
-          role-to-assume: ${{ env.AWS_ROLE_ARN }}
-          aws-region: ${{ env.AWS_REGION }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Format and Style \`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization \`${{ steps.init.outcome }}\`
+            #### Terraform Validation \`${{ steps.validate.outcome }}\`
+            #### Terraform Plan \`${{ steps.plan.outcome }}\`
 
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: ${{ env.TF_VERSION }}
+            <details><summary>Show Plan</summary>
 
-      - name: Terraform Init
-        run: terraform init
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
 
-      - name: Terraform plan
-        run: terraform plan
-        
+            </details>
+
+            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            });
+
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve -input=false
