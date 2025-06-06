@@ -1,9 +1,8 @@
-output "arn" {
-  description = "ARN of the Lambda function"
-  value       = aws_lambda_function.lamb_fn.arn
+
+output "lambda_function_name" {
+  value = aws_lambda_function.this.function_name
 }
 
-output "function_name" {
-  description = "Name of the Lambda function"
-  value       = aws_lambda_function.lamb_fn.function_name
+output "lambda_function_arn" {
+  value = aws_lambda_function.this.arn
 }
