@@ -1,8 +1,9 @@
 terraform {
+  required_version = ">= 1.12.0"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = "5.99.1"
     }
     random = {
       source = "hashicorp/random"
@@ -10,7 +11,16 @@ terraform {
  }
 
   }
-  required_version = ">= 1.10.0"
+    backend "s3" {
+    bucket = "demo-usecases-bucket-new"
+    key    = "usecase-05/lambda.tftstate"
+    region = "ap-south-1"
+  }
+}
+
+
+provider "aws" {
+  region = "ap-south-1"
 }
 
 module "ec2_scheduler" {
