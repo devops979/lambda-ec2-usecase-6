@@ -4,9 +4,7 @@ on:
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - main
+
 
 
 permissions:
@@ -111,13 +109,7 @@ jobs:
           header: "Terraform Documentation"
           path: "./README.md"
           number: ${{ github.event.pull_request.number }}
-      - name: Commit and push updated README.md
-        run: |
-          git add README.md
-          git commit -m "Update Terraform docs"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
+         
         
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
