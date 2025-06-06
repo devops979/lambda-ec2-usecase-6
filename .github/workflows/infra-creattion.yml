@@ -1,8 +1,5 @@
 name: infra creation
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - feature-demo
@@ -23,7 +20,7 @@ env:
 jobs:
   lint-and-security:
     name: Lint and Security Checks
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout code
