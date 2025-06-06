@@ -51,7 +51,7 @@ jobs:
 
   terraform-plan_apply:
     name: Terraform Plan
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: lint-and-security
     defaults:
       run:
