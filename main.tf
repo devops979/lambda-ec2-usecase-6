@@ -13,8 +13,8 @@ terraform {
   }
     backend "s3" {
     bucket = "demo-usecases-bucket-new"
-    key    = "usecase-05/lambda.tftstate"
-    region = "ap-south-1"
+    key    = "usecase-06/lambda.tftstate"
+    region = "us-east-1"
   }
 }
 
