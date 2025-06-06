@@ -1,4 +1,3 @@
-
 checkov:
   skip_checks:
     - CKV_AWS_20  # Example: Skip specific checks
